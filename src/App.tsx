@@ -785,28 +785,6 @@ const Icons = {
   ),
 };
 
-function FAQItem({ question, answer }: { question: string; answer: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border-b border-white/5">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full py-5 flex items-center justify-between text-left"
-      >
-        <span className="font-medium">{question}</span>
-        <span className={`transition-transform ${open ? "rotate-180" : ""}`}>
-          {Icons.chevron}
-        </span>
-      </button>
-      {open && (
-        <div className="pb-5 text-[#b5b5b5] text-sm leading-relaxed">
-          {answer}
-        </div>
-      )}
-    </div>
-  );
-}
-
 export default function App() {
   const [lang, setLang] = useState<"en" | "cz">("en");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
