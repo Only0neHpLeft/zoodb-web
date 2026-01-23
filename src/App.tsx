@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -786,16 +786,24 @@ const Icons = {
 };
 
 export default function App() {
-  const [lang, setLang] = useState<"en" | "cz">("en");
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  // Lazy state initialization for theme (could read from localStorage in future)
+  const [lang, setLang] = useState<"en" | "cz">(() => {
+    // Could read from localStorage here if needed
+    return "en";
+  });
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    // Could read from localStorage here if needed
+    return "dark";
+  });
   const t = translations[lang];
 
+  // Functional setState to prevent stale closures (rerender-functional-setstate)
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
 
-  // Theme-aware color classes
-  const themeClasses = {
+  // Memoize theme classes to prevent recreation on every render (rendering-hoist-jsx)
+  const themeClasses = useMemo(() => ({
     bg: theme === "dark" ? "bg-[#0a0a0a]" : "bg-white",
     text: theme === "dark" ? "text-[#fafafa]" : "text-[#0a0a0a]",
     textSecondary: theme === "dark" ? "text-[#a1a1a1]" : "text-[#666]",
@@ -810,7 +818,7 @@ export default function App() {
     hoverBg: theme === "dark" ? "hover:bg-white/5" : "hover:bg-black/5",
     separator: theme === "dark" ? "text-[#666]" : "text-[#999]",
     accent: theme === "dark" ? "text-[#ffe0c2]" : "text-[#e6c9a8]",
-  };
+  }), [theme]);
 
   return (
     <div className={`min-h-screen w-full ${themeClasses.bg} ${themeClasses.text}`}>
@@ -846,7 +854,7 @@ export default function App() {
           </Button>
           <span className={themeClasses.separator}>|</span>
           <button
-            onClick={() => setLang(lang === "en" ? "cz" : "en")}
+            onClick={() => setLang((prevLang) => (prevLang === "en" ? "cz" : "en"))}
             className={`text-sm ${themeClasses.textSecondary} ${themeClasses.hoverText} transition-colors`}
           >
             {lang === "en" ? "CZ" : "EN"}
