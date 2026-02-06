@@ -55,10 +55,14 @@ const translations = {
         { icon: "certificate", text: "Certificate upon completion" },
       ],
       platforms: {
-        windows: { name: "Windows", file: ".exe", reqs: ["Windows 10+", "2GB RAM", "~30MB"] },
-        macos: { name: "macOS", file: ".dmg", reqs: ["macOS 11+", "2GB RAM", "~30MB"] },
-        linux: { name: "Linux", file: ".AppImage", reqs: ["Ubuntu 20.04+", "2GB RAM", "~30MB"] },
+        windows: { name: "Windows", file: ".exe" },
+        macos: { name: "macOS", file: ".dmg" },
+        linux: { name: "Linux", file: ".AppImage" },
       },
+      versionLabel: "Version",
+      sizeLabel: "Size",
+      desktopLabel: "ZooDB for desktop.",
+      desktopSubtitle: "Windows, macOS and Linux.",
     },
 
     features: [
@@ -100,10 +104,14 @@ const translations = {
         { icon: "certificate", text: "Certifikát po dokončení" },
       ],
       platforms: {
-        windows: { name: "Windows", file: ".exe", reqs: ["Windows 10+", "2GB RAM", "~30MB"] },
-        macos: { name: "macOS", file: ".dmg", reqs: ["macOS 11+", "2GB RAM", "~30MB"] },
-        linux: { name: "Linux", file: ".AppImage", reqs: ["Ubuntu 20.04+", "2GB RAM", "~30MB"] },
+        windows: { name: "Windows", file: ".exe" },
+        macos: { name: "macOS", file: ".dmg" },
+        linux: { name: "Linux", file: ".AppImage" },
       },
+      versionLabel: "Verze",
+      sizeLabel: "Velikost",
+      desktopLabel: "ZooDB pro desktop.",
+      desktopSubtitle: "Windows, macOS a Linux.",
     },
 
     features: [

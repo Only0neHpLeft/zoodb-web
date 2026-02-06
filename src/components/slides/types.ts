@@ -25,7 +25,11 @@ export interface TranslationSet {
     whatsIncluded: string;
     ready: string;
     included: { icon: string; text: string }[];
-    platforms: Record<string, { name: string; file: string; reqs: string[] }>;
+    platforms: Record<string, { name: string; file: string }>;
+    versionLabel: string;
+    sizeLabel: string;
+    desktopLabel: string;
+    desktopSubtitle: string;
   };
   features: string[];
   nav: {
