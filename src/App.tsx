@@ -6,6 +6,7 @@ import { AnalyticsDashboard } from "@/components/analytics-dashboard";
 
 import { HeroSlide, DownloadSlide } from "@/components/slides";
 import { useSlideNavigation } from "@/hooks/use-slide-navigation";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useGitHubVersion } from "@/hooks/use-github-version";
 import { useReleaseAssets } from "@/hooks/use-release-assets";
 import { useOSDetection, type Platform } from "@/hooks/use-os-detection";
@@ -196,7 +197,7 @@ const NavigationArrows = memo(function NavigationArrows({
   mutedClass: string;
 }) {
   return (
-    <>
+    <div className="hidden md:contents">
       {currentSlide > 0 && (
         <button
           onClick={onPrev}
@@ -227,7 +228,7 @@ const NavigationArrows = memo(function NavigationArrows({
           {Icons.chevronRight}
         </button>
       )}
-    </>
+    </div>
   );
 });
 
@@ -327,6 +328,17 @@ export default function App() {
     totalSlides: TOTAL_SLIDES,
     transitionDuration: prefersReducedMotion ? 0 : 700,
   });
+
+  const isMobile = useIsMobile();
+  const [showSwipeHint, setShowSwipeHint] = useState(false);
+
+  // On mobile, play a brief leftward bounce to hint that swiping works
+  useEffect(() => {
+    if (!isMobile || prefersReducedMotion || currentSlide !== 0) return;
+    const timer = setTimeout(() => setShowSwipeHint(true), 1200);
+    const reset = setTimeout(() => setShowSwipeHint(false), 1800);
+    return () => { clearTimeout(timer); clearTimeout(reset); };
+  }, [isMobile, prefersReducedMotion, currentSlide]);
 
   const touchStartX = useRef<number | null>(null);
   const t = translations[lang];
@@ -446,7 +458,7 @@ export default function App() {
           className={cn("flex h-full ease-out", !prefersReducedMotion && "motion-safe:transition-transform duration-700")}
           style={{
             width: `${TOTAL_SLIDES * 100}vw`,
-            transform: `translateX(-${currentSlide * 100}vw)`,
+            transform: `translateX(calc(-${currentSlide * 100}vw${showSwipeHint ? " - 40px" : ""}))`,
           }}
         >
           <HeroSlide
