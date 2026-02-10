@@ -386,15 +386,21 @@ export default function App() {
     touchStartX.current = null;
   }, [nextSlide, prevSlide]);
 
-  // Mouse wheel
+  // Mouse wheel + trackpad horizontal swipe
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        if (e.deltaY > 30) nextSlide();
-        else if (e.deltaY < -30) prevSlide();
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 30) {
+        // Horizontal trackpad swipe – prevent browser back/forward
+        e.preventDefault();
+        if (e.deltaX > 0) nextSlide();
+        else prevSlide();
+      } else if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && Math.abs(e.deltaY) > 30) {
+        // Vertical scroll
+        if (e.deltaY > 0) nextSlide();
+        else prevSlide();
       }
     };
-    window.addEventListener("wheel", handleWheel, { passive: true });
+    window.addEventListener("wheel", handleWheel, { passive: false });
     return () => window.removeEventListener("wheel", handleWheel);
   }, [nextSlide, prevSlide]);
 
