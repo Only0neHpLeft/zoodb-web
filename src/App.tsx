@@ -356,8 +356,11 @@ export default function App() {
 
   useCommandPaletteShortcut(() => setIsCommandPaletteOpen(true));
 
+  const isAnyModalOpen = isCommandPaletteOpen || isAnalyticsOpen;
+
   // Keyboard navigation
   useEffect(() => {
+    if (isAnyModalOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight" || e.key === " ") {
         e.preventDefault();
@@ -369,25 +372,27 @@ export default function App() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [nextSlide, prevSlide]);
+  }, [nextSlide, prevSlide, isAnyModalOpen]);
 
   // Touch/swipe support
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (isAnyModalOpen) return;
     touchStartX.current = e.touches[0].clientX;
-  }, []);
+  }, [isAnyModalOpen]);
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
+    if (isAnyModalOpen || touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) {
       if (diff > 0) nextSlide();
       else prevSlide();
     }
     touchStartX.current = null;
-  }, [nextSlide, prevSlide]);
+  }, [nextSlide, prevSlide, isAnyModalOpen]);
 
   // Mouse wheel + trackpad horizontal swipe
   useEffect(() => {
+    if (isAnyModalOpen) return;
     const handleWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 30) {
         // Horizontal trackpad swipe – prevent browser back/forward
@@ -402,7 +407,7 @@ export default function App() {
     };
     window.addEventListener("wheel", handleWheel, { passive: false });
     return () => window.removeEventListener("wheel", handleWheel);
-  }, [nextSlide, prevSlide]);
+  }, [nextSlide, prevSlide, isAnyModalOpen]);
 
   const toggleLang = useCallback(() => setLang(l => l === "en" ? "cz" : "en"), []);
 
@@ -430,7 +435,7 @@ export default function App() {
       />
 
       <div
-        className={cn("h-screen w-screen overflow-hidden", c.bg, c.text)}
+        className={cn("h-screen w-screen overflow-hidden", c.bg, c.text, isAnyModalOpen && "pointer-events-none")}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
