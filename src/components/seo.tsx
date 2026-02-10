@@ -10,12 +10,12 @@ interface SEOProps {
 
 const DEFAULT_SEO = {
   en: {
-    title: "ZooDB - Learn SQL Interactively",
-    description: "Practice SQL with a real database. 26 lessons, 68+ tasks. No account needed. Free & offline.",
+    title: "ZooDB - Learn SQL Interactively | Free Offline SQL Practice",
+    description: "ZooDB is a free, offline desktop app to learn SQL interactively. Practice with a real zoo database — 26 lessons, 68+ tasks. No account needed. Download for Windows, macOS & Linux.",
   },
   cz: {
-    title: "ZooDB - Naučte se SQL interaktivně",
-    description: "Cvičte SQL s reálnou databází. 26 lekcí, 68+ úkolů. Bez registrace. Zdarma a offline.",
+    title: "ZooDB - Naučte se SQL interaktivně | Bezplatný offline SQL trenažér",
+    description: "ZooDB je bezplatná offline desktopová aplikace pro interaktivní výuku SQL. Cvičte s reálnou databází zoo — 26 lekcí, 68+ úkolů. Bez registrace. Pro Windows, macOS a Linux.",
   },
 };
 
@@ -38,13 +38,22 @@ export function SEO({
     document.title = seoTitle;
 
     // Update meta tags
+    const keywords = lang === "cz"
+      ? "zoodb, zoo db, zoo databáze, naučit se sql, sql cvičení, sql tutoriál, interaktivní sql, sql lekce, sql úkoly, offline sql, sql trenažér, sql pro začátečníky, zoodb app"
+      : "zoodb, zoo db, zoo database, learn sql, sql practice, sql tutorial, interactive sql, sql lessons, sql tasks, offline sql, free sql course, sql trainer, sql exercises, sql for beginners, practice sql queries, desktop sql app, zoodb app";
+
     const metaTags: Record<string, string> = {
       "description": seoDescription,
+      "keywords": keywords,
+      "author": "ZooDB",
+      "robots": "index, follow",
       "og:title": seoTitle,
       "og:description": seoDescription,
       "og:image": fullImageUrl,
       "og:url": url,
       "og:type": "website",
+      "og:site_name": "ZooDB",
+      "og:locale": lang === "cz" ? "cs_CZ" : "en_US",
       "twitter:card": "summary_large_image",
       "twitter:title": seoTitle,
       "twitter:description": seoDescription,
