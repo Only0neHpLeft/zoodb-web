@@ -6,7 +6,8 @@
       "Bash(git push:*)",
       "Bash(command -v:*)",
       "Bash(rsvg-convert:*)",
-      "Bash(convert:*)"
+      "Bash(convert:*)",
+      "WebFetch(domain:zoodb.app)"
     ]
   }
 }
